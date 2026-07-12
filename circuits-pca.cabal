@@ -1,0 +1,76 @@
+cabal-version: 3.0
+name: circuits-pca
+version: 0.1.0.0
+license: BSD-3-Clause
+license-file: LICENSE
+copyright: Tony Day (c) 2026
+category: math
+author: Tony Day
+maintainer: tonyday567@gmail.com
+homepage: https://github.com/tonyday567/circuits-pca#readme
+bug-reports: https://github.com/tonyday567/circuits-pca/issues
+synopsis: PCA as dagger-compose + Optic (,) residual, over harpie arrays
+description:
+  Principal component analysis as a residual-ownership protocol on circuits:
+  build a self-adjoint Gram matrix via dagger-shaped transpose compose,
+  spectrally cut with hmatrix (through harpie), and keep / discard axes
+  with the free-Tambara product optic packing.
+
+  See also the design card in circuits: examples/pca.md.
+
+build-type: Simple
+tested-with:
+  ghc ==9.14.1
+
+extra-doc-files:
+  ChangeLog.md
+  readme.md
+
+source-repository head
+  type: git
+  location: https://github.com/tonyday567/circuits-pca
+
+common ghc-options-stanza
+  ghc-options:
+    -Wall
+    -Wno-unused-imports
+    -Wcompat
+    -Widentities
+    -Wincomplete-record-updates
+    -Wincomplete-uni-patterns
+    -Wpartial-fields
+    -Wredundant-constraints
+
+common ghc2024-stanza
+  default-language: GHC2024
+
+library
+  import: ghc-options-stanza
+  import: ghc2024-stanza
+  hs-source-dirs: src
+  exposed-modules:
+    Circuit.PCA
+    Circuit.PCA.Optic
+    Circuit.PCA.Lin
+  build-depends:
+    base >=4.18 && <5,
+    circuits >=0.2 && <0.3,
+    circuits-ad >=0.1 && <0.2,
+    harpie >=0.2 && <0.4,
+    harpie-numhask >=0.2 && <0.3,
+    hmatrix >=0.20 && <0.22,
+    numhask >=0.14 && <0.15,
+    vector >=0.12 && <0.14,
+
+test-suite verify
+  import: ghc-options-stanza
+  import: ghc2024-stanza
+  type: exitcode-stdio-1.0
+  hs-source-dirs: test
+  main-is: Verify.hs
+  build-depends:
+    base >=4.18 && <5,
+    circuits-pca,
+    harpie,
+    hmatrix >=0.20 && <0.22,
+    vector >=0.12 && <0.14,

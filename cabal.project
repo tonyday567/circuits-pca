@@ -1,0 +1,16 @@
+packages:
+  circuits-pca.cabal
+  ../circuits/circuits.cabal
+  ../circuits-ad/circuits-ad.cabal
+  ../numhask/numhask.cabal
+  ../numhask-diff/numhask-diff.cabal
+  ../harpie/harpie.cabal
+  ../harpie-numhask/harpie-numhask.cabal
+  ../../other/ad-delcont/ad-delcont.cabal
+
+write-ghc-environment-files: always
+
+-- local harpie is 0.3; harpie-numhask still bounds <0.3
+allow-newer:
+  ad-delcont:base,
+  harpie-numhask:harpie
