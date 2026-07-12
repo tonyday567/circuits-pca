@@ -1,8 +1,12 @@
 -- | Smoke tests for circuits-pca.
 module Main where
 
+import Circuit.AD (runDiff)
 import Circuit.PCA
+import Circuit.PCA.Diff (reconstructionLossD)
 import Data.Vector.Storable qualified as VS
+import Data.Vector.Unboxed qualified as VU
+import Harpie.Array.Storable (Array)
 import Harpie.Array.Storable qualified as A
 import Numeric.LinearAlgebra qualified as LA
 import System.Exit (exitFailure, exitSuccess)
@@ -40,6 +44,22 @@ almostEqV :: VS.Vector Double -> VS.Vector Double -> Bool
 almostEqV a b =
   VS.length a == VS.length b
     && VS.and (VS.zipWith almostEq a b)
+
+almostEqEps :: Double -> Double -> Double -> Bool
+almostEqEps eps a b = abs (a - b) < eps
+
+-- | Central-difference gradient of the reconstruction loss w.r.t. the flat
+-- input vector.
+finiteDiffGrad :: PCAModel -> Array Double -> Double -> VS.Vector Double
+finiteDiffGrad model x eps =
+  let base = A.asVector x
+      sh = VU.toList (A.shape x)
+      lossAt v = fst (runDiff (reconstructionLossD model) (A.array sh (VS.toList v)))
+      central i _ =
+        let vp = VS.imap (\j v -> if i == j then v + eps else v) base
+            vm = VS.imap (\j v -> if i == j then v - eps else v) base
+         in (lossAt vp - lossAt vm) / (2 * eps)
+   in VS.imap central base
 
 main :: IO ()
 main = do
@@ -89,6 +109,12 @@ main = do
       row2 = setMajor model maj2 row0
       maj2' = viewMajor model row2
   assert "view . set ~ id on major" (almostEqV maj2 maj2')
+
+  -- diff-through-PCA-use: reconstruction loss gradient vs finite differences
+  let (_, pb) = runDiff (reconstructionLossD model) sample2d
+      grad = A.asVector (pb 1.0)
+      fd = finiteDiffGrad model sample2d 1e-5
+  assert "reconstruction loss grad ~ finite diff" (almostEqV grad fd)
 
   putStrLn "all ok"
   exitSuccess

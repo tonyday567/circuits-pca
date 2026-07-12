@@ -50,6 +50,7 @@ library
   hs-source-dirs: src
   exposed-modules:
     Circuit.PCA
+    Circuit.PCA.Diff
     Circuit.PCA.Optic
     Circuit.PCA.Lin
   build-depends:
@@ -70,6 +71,7 @@ test-suite verify
   main-is: Verify.hs
   build-depends:
     base >=4.18 && <5,
+    circuits-ad >=0.1 && <0.2,
     circuits-pca,
     harpie,
     hmatrix >=0.20 && <0.22,
