@@ -1,7 +1,7 @@
 -- | Smoke tests for circuits-pca.
 module Main where
 
-import Circuit.AD (runDiff)
+import Circuit.Diff.Circuit (runDiff)
 import Circuit.PCA
 import Circuit.PCA.Diff (reconstructionLossD)
 import Data.Vector.Storable qualified as VS

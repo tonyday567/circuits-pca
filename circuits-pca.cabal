@@ -56,7 +56,7 @@ library
   build-depends:
     base >=4.18 && <5,
     circuits >=0.2 && <0.5,
-    circuits-ad >=0.1 && <0.2,
+    circuits-diff >=0.1 && <0.2,
     harpie >=0.2 && <0.4,
     hmatrix >=0.20 && <0.22,
     numhask >=0.14 && <0.15,
@@ -69,7 +69,7 @@ executable circuits-pca-axioma
   main-is: axioma.hs
   build-depends:
     base >=4.18 && <5,
-    circuits-ad >=0.1 && <0.2,
+    circuits-diff >=0.1 && <0.2,
     circuits-pca,
     harpie,
     hmatrix >=0.20 && <0.22,

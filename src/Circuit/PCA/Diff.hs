@@ -7,7 +7,7 @@
 -- through the /use/ of a PCA (centering, projection, reconstruction, loss),
 -- not yet through the spectral fit itself.
 --
--- Each operation is packaged as a 'Circuit.AD.Diff' arrow, so it composes
+-- Each operation is packaged as a 'Circuit.Diff.Diff' arrow, so it composes
 -- with the rest of the circuits-ad stack.
 module Circuit.PCA.Diff
   ( -- * Differentiable linear maps
@@ -20,7 +20,7 @@ module Circuit.PCA.Diff
   )
 where
 
-import Circuit.AD (Diff, pattern Diff)
+import Circuit.Diff.Circuit (Diff, data Diff)
 import Circuit.PCA (PCAModel (..), projectRows)
 import Circuit.PCA.Lin (fromMatrix, multM, toMatrix, transpose2)
 import Control.Category
