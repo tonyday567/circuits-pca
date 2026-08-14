@@ -59,7 +59,6 @@ Dependencies (local packages in `cabal.project`):
 | `circuits-ad` | reverse-mode sibling (diff-through-PCA later) |
 | `numhask` 0.14 | numeric hierarchy |
 | `harpie` | array API |
-| `harpie-numhask` | numhask orphans / fixed-shape bridge |
 | `hmatrix` | BLAS mult + thin SVD (via `Harpie.Hmatrix`) |
 
 ## usage
@@ -95,4 +94,4 @@ patterns (`~/haskell/harpie-perf`).
 ## status
 
 0.1 — batch PCA, product optic, smoke tests. Not yet: streaming PCA,
-diff through SVD, fixed-shape harpie-numhask path, randomised SVD.
+diff through SVD, fixed-shape harpie path, randomised SVD.

@@ -49,8 +49,6 @@ import Circuit.PCA.Optic
 import Data.Vector.Storable qualified as VS
 import Harpie.Array.Storable (Array)
 import Harpie.Array.Storable qualified as A
--- harpie-numhask: numhask orphans for fixed-shape harpie (streaming/fixed path later).
-import Harpie.NumHask ()
 import Numeric.LinearAlgebra qualified as LA
 import Prelude
 
