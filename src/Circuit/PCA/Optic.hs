@@ -48,7 +48,7 @@ where
 import Circuit.Poly (Mono, Morphism, applyLens, lens)
 
 -- $setup
--- >>> import Circuit.Poly (lens)
+-- >>> import Circuit.Poly
 -- >>> import Circuit.PCA.Optic
 
 -- | Existential residual optic for monoidal action @mon@ over @(->)@.
