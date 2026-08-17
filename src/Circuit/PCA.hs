@@ -42,8 +42,9 @@ module Circuit.PCA
 where
 
 -- circuits-ad: reverse-mode sibling; kept linked for diff-through-PCA work.
-import Circuit.Diff.Circuit ()
+
 import Circuit.Dagger (Dagger (..), transpose)
+import Circuit.Diff.Circuit ()
 import Circuit.PCA.Lin
 import Circuit.PCA.Optic
 import Data.Vector.Storable qualified as VS

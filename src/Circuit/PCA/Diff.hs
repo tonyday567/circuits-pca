@@ -20,7 +20,7 @@ module Circuit.PCA.Diff
   )
 where
 
-import Circuit.Diff.Circuit (Diff, data Diff)
+import Circuit.Diff.Circuit (Diff, pattern Diff)
 import Circuit.PCA (PCAModel (..), projectRows)
 import Circuit.PCA.Lin (fromMatrix, multM, toMatrix, transpose2)
 import Control.Category
