@@ -51,8 +51,9 @@ library
   exposed-modules:
     Circuit.PCA
     Circuit.PCA.Diff
-    Circuit.PCA.Optic
     Circuit.PCA.Lin
+    Circuit.PCA.Optic
+
   build-depends:
     base >=4.18 && <5,
     circuits >=0.2 && <0.5,
