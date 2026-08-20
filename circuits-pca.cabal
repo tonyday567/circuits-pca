@@ -56,10 +56,10 @@ library
     Circuit.PCA.Optic
 
   build-depends:
-    base >=4.18 && <5,
-    circuits >=0.2 && <0.5,
+    base >=4.20 && <5,
+    circuits >=0.3 && <0.4,
     circuits-diff >=0.1 && <0.2,
-    harpie >=0.2 && <0.4,
+    harpie >=0.3 && <0.4,
     hmatrix >=0.20 && <0.22,
     vector >=0.12 && <0.14,
 
@@ -69,7 +69,7 @@ executable circuits-pca-axioma
   hs-source-dirs: app
   main-is: axioma.hs
   build-depends:
-    base >=4.18 && <5,
+    base >=4.20 && <5,
     circuits-diff >=0.1 && <0.2,
     circuits-pca,
     harpie,
