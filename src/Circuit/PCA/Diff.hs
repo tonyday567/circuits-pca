@@ -20,7 +20,7 @@ module Circuit.PCA.Diff
   )
 where
 
-import Circuit.Diff.Circuit (Diff, pattern Diff)
+import Circuit.Diff.Circuit (Diff, Diff', pattern Diff)
 import Circuit.PCA (PCAModel (..), projectRows)
 import Circuit.PCA.Lin (fromMatrix, multM, toMatrix, transpose2)
 import Control.Category
@@ -29,7 +29,7 @@ import Numeric.LinearAlgebra qualified as LA
 import Prelude hiding (id, (.))
 
 -- | Subtract a constant mean row.  The mean is a parameter, not an input.
-subtractMeanD :: Array Double -> Diff (Array Double) (Array Double)
+subtractMeanD :: Array Double -> Diff' (Array Double) (Array Double)
 subtractMeanD mean =
   Diff $ \x ->
     case (toMatrix x, toMatrix mean) of
@@ -40,7 +40,7 @@ subtractMeanD mean =
       _ -> error "Circuit.PCA.Diff.subtractMeanD: rank-2 input and rank-1 mean expected"
 
 -- | Add a constant mean row.
-addMeanD :: Array Double -> Diff (Array Double) (Array Double)
+addMeanD :: Array Double -> Diff' (Array Double) (Array Double)
 addMeanD mean =
   Diff $ \x ->
     case (toMatrix x, toMatrix mean) of
@@ -51,24 +51,24 @@ addMeanD mean =
       _ -> error "Circuit.PCA.Diff.addMeanD: rank-2 input and rank-1 mean expected"
 
 -- | Multiply on the right by a fixed matrix.
-multMD :: Array Double -> Diff (Array Double) (Array Double)
+multMD :: Array Double -> Diff' (Array Double) (Array Double)
 multMD w =
   Diff $ \x ->
     let y = multM x w
      in (y, \dy -> multM dy (transpose2 w))
 
 -- | Differentiable scores: center, then project onto principal axes.
-scoresD :: PCAModel -> Diff (Array Double) (Array Double)
+scoresD :: PCAModel -> Diff' (Array Double) (Array Double)
 scoresD PCAModel {pcaMean, pcaComponents} =
   multMD pcaComponents . subtractMeanD pcaMean
 
 -- | Differentiable reconstruction from scores.
-reconstructD :: PCAModel -> Diff (Array Double) (Array Double)
+reconstructD :: PCAModel -> Diff' (Array Double) (Array Double)
 reconstructD PCAModel {pcaMean, pcaComponents} =
   addMeanD pcaMean . multMD (transpose2 pcaComponents)
 
 -- | Full differentiable project-through-model: @reconstruct . scores@.
-projectRowsD :: PCAModel -> Diff (Array Double) (Array Double)
+projectRowsD :: PCAModel -> Diff' (Array Double) (Array Double)
 projectRowsD model = reconstructD model . scoresD model
 
 -- | Mean-squared reconstruction error, differentiable with respect to the
@@ -76,7 +76,7 @@ projectRowsD model = reconstructD model . scoresD model
 --
 -- Forward: @loss = (1/n) * ||x - projectRows model x||²@
 -- Pullback: @dloss/dx = (2/n) * (x - projectRows model x)@
-reconstructionLossD :: PCAModel -> Diff (Array Double) Double
+reconstructionLossD :: PCAModel -> Diff' (Array Double) Double
 reconstructionLossD model =
   Diff $ \x ->
     case toMatrix x of
