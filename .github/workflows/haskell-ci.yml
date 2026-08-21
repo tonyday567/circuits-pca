@@ -57,6 +57,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libblas-dev liblapack-dev
 
+      - name: Use CI project file
+        run: cp cabal.project.ci cabal.project
+
       - name: Set up GHC ${{ matrix.ghc-version }}
         uses: haskell-actions/setup@v2
         id: setup
