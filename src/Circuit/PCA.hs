@@ -26,10 +26,6 @@ module Circuit.PCA
     reconstruct,
     projectRows,
 
-    -- * Dagger face
-    gramDagger,
-    gramViaDagger,
-
     -- * Single-row optic
     rowLens,
     viewMajor,
@@ -43,7 +39,6 @@ where
 
 -- circuits-ad: reverse-mode sibling; kept linked for diff-through-PCA work.
 
-import Circuit.Dagger (Dagger (..), transpose)
 import Circuit.Diff.Circuit ()
 import Circuit.PCA.Lin
 import Circuit.PCA.Optic
@@ -125,31 +120,6 @@ reconstruct PCAModel {pcaMean, pcaComponents} sc =
 -- | Full project-through-model: @reconstruct . scores@.
 projectRows :: PCAModel -> Array Double -> Array Double
 projectRows model x = reconstruct model (scores model x)
-
--- | Dagger-shaped Gram as an explicit reverse wire on rank-2 arrays.
---
--- @fwd@ multiplies on the left by @X†@ (features←samples); @bwd@ is the
--- dual map. Illustrates why 'Dagger' is in circuits: covariance is
--- reverse-then-compose, not a one-way arrow.
-gramDagger :: Array Double -> Dagger (->) (Array Double) (Array Double)
-gramDagger x =
-  case toMatrix x of
-    Nothing -> error "Circuit.PCA.gramDagger: expected rank-2"
-    Just m ->
-      let xt = LA.tr m
-          fr a = case toMatrix a of
-            Just ma -> fromMatrix (xt LA.<> ma)
-            Nothing -> error "gramDagger.front: rank-2"
-          ba b = case toMatrix b of
-            Just mb -> fromMatrix (m LA.<> mb)
-            Nothing -> error "gramDagger.back: rank-2"
-       in Dagger fr ba
-
--- | Feature Gram via dagger-compose: @front d x@.
-gramViaDagger :: Array Double -> Array Double
-gramViaDagger x =
-  let d = gramDagger x
-   in front d x
 
 -- | Product optic on one ambient row.
 --
